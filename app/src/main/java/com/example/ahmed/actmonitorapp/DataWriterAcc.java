@@ -1,6 +1,5 @@
 package com.example.ahmed.actmonitorapp;
 
-import android.content.Context;
 import android.hardware.SensorEvent;
 import android.os.Environment;
 import android.util.Log;
@@ -29,7 +28,7 @@ public class DataWriterAcc {
     private File dataFile;
     private BufferedWriter writer;
 
-    public DataWriterAcc(final Context context) throws IOException
+    public DataWriterAcc() throws IOException
     {
         dataFile = createAccFile();
         writer = new BufferedWriter(new FileWriter(dataFile));
