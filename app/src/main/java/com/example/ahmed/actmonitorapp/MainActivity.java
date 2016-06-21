@@ -38,23 +38,13 @@ public class MainActivity extends AppCompatActivity
             light = Light.getInstance(this);
             sensingButton = (Button) findViewById(R.id.sensingButton);
 
-
-
-
-
-
-
-
-
-
-
           Calendar cur_cal = new GregorianCalendar();
           cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
 
           Calendar cal = new GregorianCalendar();
           cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
-          cal.set(Calendar.HOUR_OF_DAY, 18);
-          cal.set(Calendar.MINUTE, 32);
+          cal.set(Calendar.HOUR_OF_DAY, 05);
+          cal.set(Calendar.MINUTE, 06);
           cal.set(Calendar.SECOND, cur_cal.get(Calendar.SECOND));
           cal.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
           cal.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
@@ -63,7 +53,7 @@ public class MainActivity extends AppCompatActivity
           Intent alarmIntent = new Intent(this, AlarmReceiver.class);
           pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
           AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-          alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 30*1000, pendingIntent);
+          alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 30*1000, pendingIntent);
         }
 
         @Override
@@ -148,13 +138,7 @@ public class MainActivity extends AppCompatActivity
 
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
             Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
-
-
-            if ((!accelerometer.isSensing()) && (!light.isSensing()) && (!gyroscope.isSensing())) {
-                startSensing();
-            } else {
-                stopSensing();
-            }
+            startSensing();
             //setButtonText();
 
 
@@ -176,12 +160,12 @@ public class MainActivity extends AppCompatActivity
         manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);
         Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
-
-        if ((!accelerometer.isSensing()) && (!light.isSensing()) && (!gyroscope.isSensing())) {
+        stopSensing();
+      /*  if ((!accelerometer.isSensing()) && (!light.isSensing()) && (!gyroscope.isSensing())) {
             startSensing();
         } else {
             stopSensing();
-        }
+        }*/
 
     }
     }
