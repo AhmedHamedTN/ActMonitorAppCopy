@@ -44,9 +44,9 @@ public class Light implements SensorEventListener
         return isSensing;
     }
 
-    public void start(final Context context) throws IOException
+    public void start() throws IOException
     {
-        fileWriter = new DataWriterLight(context);
+        fileWriter = new DataWriterLight();
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         isSensing = true;
     }
