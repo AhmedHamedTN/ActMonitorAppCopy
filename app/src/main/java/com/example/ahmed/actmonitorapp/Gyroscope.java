@@ -43,9 +43,9 @@ public class Gyroscope implements SensorEventListener
         return isSensing;
     }
 
-    public void start(final Context context) throws IOException
+    public void start() throws IOException
     {
-        fileWriter = new DataWriterGyro(context);
+        fileWriter = new DataWriterGyro();
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
         isSensing = true;
     }
