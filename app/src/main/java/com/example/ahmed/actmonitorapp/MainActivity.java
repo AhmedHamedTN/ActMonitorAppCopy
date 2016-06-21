@@ -11,16 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
 public class MainActivity extends AppCompatActivity
     {
-        private Accelerometer accelerometer;
-        private Gyroscope gyroscope;
-        private Light light;
+
         private Button sensingButton;
 
         private PendingIntent pendingIntent;
@@ -33,18 +30,26 @@ public class MainActivity extends AppCompatActivity
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            accelerometer = Accelerometer.getInstance(this);
-            gyroscope = Gyroscope.getInstance(this);
-            light = Light.getInstance(this);
+
             sensingButton = (Button) findViewById(R.id.sensingButton);
+
+
+
+
+
+
+
+
+
+
 
           Calendar cur_cal = new GregorianCalendar();
           cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
 
           Calendar cal = new GregorianCalendar();
           cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
-          cal.set(Calendar.HOUR_OF_DAY, 05);
-          cal.set(Calendar.MINUTE, 06);
+          cal.set(Calendar.HOUR_OF_DAY, 8);
+          cal.set(Calendar.MINUTE, 07);
           cal.set(Calendar.SECOND, cur_cal.get(Calendar.SECOND));
           cal.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
           cal.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
@@ -52,8 +57,13 @@ public class MainActivity extends AppCompatActivity
           // Retrieve a PendingIntent that will perform a broadcast
           Intent alarmIntent = new Intent(this, AlarmReceiver.class);
           pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+          alarmIntent.putExtra("state",false);
           AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-          alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 30*1000, pendingIntent);
+          alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 30*1000, pendingIntent);
+
+
+
         }
 
         @Override
@@ -67,42 +77,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPause()
         {
             super.onPause();
-            stopSensing();
         }
-
-    public void startSensing()
-    {
-        if ((!accelerometer.isSensing()) && (!light.isSensing()) && (!gyroscope.isSensing()))
-        {
-            try
-            {
-                accelerometer.start(this);
-                gyroscope.start(this);
-                light.start(this);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void stopSensing()
-    {
-        if ((accelerometer.isSensing()) && (light.isSensing()) && (gyroscope.isSensing()))
-        {
-            try
-            {
-                accelerometer.stop();
-                gyroscope.stop();
-                light.stop();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
 
 /*    private void setRecyclerView()
     {
@@ -138,7 +113,8 @@ public class MainActivity extends AppCompatActivity
 
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
             Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
-            startSensing();
+
+
             //setButtonText();
 
 
@@ -158,14 +134,10 @@ public class MainActivity extends AppCompatActivity
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        manager.cancel(pendingIntent);
+      alarmIntent.putExtra("state",true);
+      manager.cancel(pendingIntent);
         Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
-        stopSensing();
-      /*  if ((!accelerometer.isSensing()) && (!light.isSensing()) && (!gyroscope.isSensing())) {
-            startSensing();
-        } else {
-            stopSensing();
-        }*/
+
 
     }
     }
