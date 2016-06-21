@@ -1,6 +1,5 @@
 package com.example.ahmed.actmonitorapp;
 
-import android.content.Context;
 import android.hardware.SensorEvent;
 import android.os.Environment;
 import android.util.Log;
@@ -17,7 +16,7 @@ public class DataWriterGyro {
     private File dataFile;
     private BufferedWriter writer;
 
-    public DataWriterGyro(final Context context) throws IOException
+    public DataWriterGyro() throws IOException
     {
         dataFile = createGyroFile();
         writer = new BufferedWriter(new FileWriter(dataFile));
