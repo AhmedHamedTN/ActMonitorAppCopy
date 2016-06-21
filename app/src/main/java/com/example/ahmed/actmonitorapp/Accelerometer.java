@@ -8,7 +8,6 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 /**
  * Created by ahmed on 16/06/16.
@@ -46,9 +45,9 @@ public class Accelerometer implements SensorEventListener
     }
 
 
-    public void start(final Context context) throws IOException
+    public void start() throws IOException
     {
-        fileWriter = new DataWriterAcc(context);
+        fileWriter = new DataWriterAcc();
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
         isSensing = true;
     }
